@@ -118,12 +118,12 @@ public class DataManagerTests
     }
 
     [Fact]
-    public void LoadAll_LoadsFourteenTiles()
+    public void LoadAll_LoadsFifteenTiles()
     {
         var dm = CreateDataManager();
         dm.LoadAll();
 
-        Assert.Equal(14, dm.Tiles.Count);
+        Assert.Equal(15, dm.Tiles.Count);
     }
 
     [Fact]

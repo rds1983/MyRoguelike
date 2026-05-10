@@ -1,6 +1,6 @@
 # MyRoguelike — Developer Guide
 
-> Version 0.5.0 — Phase 5 (Player Movement & Controls)
+> Version 0.9.0 — Phase 9 (Dungeon Generator, FOV, Traps)
 
 ---
 
@@ -245,7 +245,8 @@ Scenes use `Game1.Instance.SceneManager` to transition:
 |-------|------|---------|
 | `TitleScene` | `Scenes/TitleScene.cs` | "Press Enter to Start" — entry point |
 | `OverworldScene` | `Scenes/OverworldScene.cs` | Main game map with player movement |
-| `PlaceholderScene` | `Scenes/PlaceholderScene.cs` | Generic message scene (used by stairs) |
+| `DungeonScene` | `Scenes/DungeonScene.cs` | BSP dungeon floors with FOV + traps (entered via `stairs_down`) |
+| `PlaceholderScene` | `Scenes/PlaceholderScene.cs` | Generic message scene (kept for future use) |
 | `GameOverScene` | `Scenes/GameOverScene.cs` | "You Died" — press Enter to return to title |
 
 ## Input & Movement (Phase 5)
@@ -274,10 +275,29 @@ else if (kb.IsKeyDown(Keys.D) || kb.IsKeyDown(Keys.Right)) dx = 1;
 
 ### Stair Interaction
 
-When the player presses Enter on a `stairs_down` or `stairs_up` tile:
-- A `PlaceholderScene` is pushed onto the stack with a message
-- Pressing Enter on the placeholder pops back to the overworld
-- This mechanism will be replaced with actual `DungeonScene` transitions in Phase 9
+When the player presses Enter on a `stairs_down` tile in the overworld:
+- A `DungeonScene` is pushed with a deterministic dungeon seed derived from the world seed + dungeon region location
+- The player's overworld position is saved and restored when exiting the dungeon via `stairs_up`
+
+In the dungeon, pressing Enter on:
+- `stairs_up` (`<`) returns to the overworld (pops the scene)
+- `stairs_down` (`>`) currently shows a placeholder message for deeper floors (to be expanded in later phases)
+
+## Dungeon Generation (Phase 9)
+
+Dungeon generation is implemented in `src/MyRoguelike/World/DungeonGenerator.cs`:
+- **BSP splitting** of the interior rectangle into leaves
+- One room carved per leaf (stone floor) with surrounding walls
+- Rooms connected with simple **L-shaped corridors**
+- `stairs_up` placed in the first room center, `stairs_down` in the last room center
+- A small number of `spike_trap` tiles are placed on floor tiles (excluding stairs)
+
+## Field of View (FOV) (Phase 9)
+
+FOV is implemented in `src/MyRoguelike/Systems/FovCalculator.cs`:
+- Uses `Map.IsTransparent(x, y)` to block vision through walls/doors
+- Produces a `bool[,]` visibility mask for the current frame
+- `DungeonScene` tracks an `explored` mask so previously seen tiles render dimly when out of sight
 
 ### Adding New Scenes
 
@@ -316,8 +336,8 @@ dotnet build
 
 ## Current Status
 
-- **Phase:** 5 (Player Movement & Controls) — Complete
-- **Next phase:** 6 (Combat System)
+- **Phase:** 9 (Dungeon Generator, FOV, Traps) — Complete
+- **Next phase:** 10 (Items & Inventory)
 - For full task breakdown, see [`docs/roadmap.md`](docs/roadmap.md)
 - For design details, see [`docs/design.md`](docs/design.md)
 

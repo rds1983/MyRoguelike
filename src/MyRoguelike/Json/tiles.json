@@ -80,6 +80,14 @@
     "color": { "r": 255, "g": 255, "b": 255, "a": 255 }
   },
   {
+    "id": "spike_trap",
+    "name": "Spike Trap",
+    "isWalkable": true,
+    "isTransparent": true,
+    "glyph": "^",
+    "color": { "r": 220, "g": 60, "b": 60, "a": 255 }
+  },
+  {
     "id": "sand",
     "name": "Sand",
     "isWalkable": true,

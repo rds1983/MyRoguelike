@@ -1,9 +1,9 @@
 {
   "project": "MyRoguelike",
-  "version": "0.8.0",
-  "lastUpdated": "2026-05-10T21:00:00Z",
-  "phase": 8,
-  "phaseName": "Settlement Generation",
+  "version": "0.9.0",
+  "lastUpdated": "2026-05-10T21:10:00Z",
+  "phase": 9,
+  "phaseName": "Dungeon Generator",
   "phaseComplete": true,
   "completedTasks": [
     "Phase 1-2: Project scaffold, data system, tests",
@@ -26,11 +26,15 @@
     "Phase 8.5: SettlementGenerator — skips small maps (< 30x30), biome-aware placement",
     "Phase 8.6: WorldGenerator uses SettlementGenerator instead of placeholder regions",
     "Phase 8.7: Player spawns on grass (not inside buildings) verified",
-    "Phase 8.8: Verification — 194 tests pass (10 new settlement tests)"
+    "Phase 8.8: Verification — 194 tests pass (10 new settlement tests)",
+    "Phase 9.1: DungeonGenerator — BSP splitting, rooms, corridors, stairs_up/stairs_down",
+    "Phase 9.2: FovCalculator — symmetric shadowcasting using tile transparency",
+    "Phase 9.3: DungeonScene — enter from overworld stairs_down, explored memory rendering",
+    "Phase 9.4: Traps — spike_trap tile damages player on step and disarms",
+    "Phase 9.5: Verification — added dungeon + FOV unit tests"
   ],
   "currentTasks": [],
   "nextTasks": [
-    "Phase 9: Dungeon Generator — BSP rooms, FOV, traps",
     "Phase 10: Items & Inventory — pickup, equip, use, drop"
   ],
   "knownBugs": [
@@ -142,8 +146,8 @@
     "design.md": "COMPLETE",
     "roadmap.md": "COMPLETE",
     "vision.md": "COMPLETE",
-    "User Guide.md": "NEEDS UPDATE — add world generation",
-    "Developer Guide.md": "NEEDS UPDATE — add world gen, biome gen docs"
+    "User Guide.md": "UPDATED — dungeons, FOV, traps",
+    "Developer Guide.md": "UPDATED — dungeon gen, FOV, transitions"
   },
   "sourceFiles": [
     "src/MyRoguelike/Core/Program.cs",
@@ -195,7 +199,7 @@
     "fonts": ["Content/Fonts/Console.spritefont (Arial, 24pt)"],
     "audio": []
   },
-  "notes": "Phase 8 complete. SettlementGenerator replaces placeholder regions with actual buildings on the overworld map. 3 cities (4-8 stone buildings with walls, floors, doors), 4 villages (2-4 smaller buildings), and 3 dungeons (stone structure with stairs_down) are placed on walkable biomes via seeded RNG (seed+10000). Roads connect settlements via L-shaped paths. Player spawns on grass (not inside buildings). 194 tests pass (10 new settlement tests, 184 existing).",
+  "notes": "Phase 9 complete. Added a BSP-based DungeonGenerator (rooms + corridors) with stairs_up/stairs_down and spike traps. Implemented FOV via symmetric shadowcasting with explored-memory rendering. Overworld stairs_down now enters a DungeonScene; stairs_up returns to the overworld and restores the player position. Added unit tests for dungeon generation and FOV. Updated user/developer guides.",
   "lastAgent": null,
   "agentInstructions": "state.json is a comprehensive project state tracker. To continue work: read state.json, check current phase and completedTasks, pick the next unstarted phase. After completing work, update state.json with new completedTasks, any decisions made, and notes."
 }

@@ -323,13 +323,17 @@ public class OverworldScene : Scene
     private void TryInteract()
     {
         var tile = _map.GetTile(_player.Position.X, _player.Position.Y);
-        if (tile.TileDefId == "stairs_down" || tile.TileDefId == "stairs_up")
+        if (tile.TileDefId == "stairs_down")
         {
-            var scene = new PlaceholderScene(
-                tile.TileDefId == "stairs_down"
-                    ? "You descend the stairs..."
-                    : "You climb the stairs...");
-            Game1.Instance.SceneManager.Push(scene);
+            var dungeonRegion = _world.Regions.FirstOrDefault(r =>
+                r.Type == RegionType.Dungeon && r.Contains(_player.Position.X, _player.Position.Y));
+
+            var dungeonSeed = _world.Seed + 20000 + (dungeonRegion?.CenterX ?? 0) * 31 + (dungeonRegion?.CenterY ?? 0) * 17;
+            Game1.Instance.SceneManager.Push(new DungeonScene(_player, _player.Position, dungeonSeed));
+        }
+        else if (tile.TileDefId == "stairs_up")
+        {
+            _messageLog.Add("These stairs lead nowhere.", Color.Gray);
         }
     }
 
