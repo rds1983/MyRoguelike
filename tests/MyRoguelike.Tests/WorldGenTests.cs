@@ -263,4 +263,155 @@ public class WorldGenTests
             Assert.NotNull(tile.TileDefId);
         }
     }
+
+    // ── SettlementGenerator ───────────────────────────────────────────
+
+    [Fact]
+    public void SettlementGenerator_Generate_ReturnsRegions()
+    {
+        var map = new Map(100, 100);
+        var bg = new BiomeGenerator(42);
+        var biomes = bg.GenerateHeightmap(100, 100);
+        var gen = new SettlementGenerator(42, map, biomes);
+        var regions = gen.Generate();
+
+        Assert.NotEmpty(regions);
+    }
+
+    [Fact]
+    public void SettlementGenerator_GeneratesCitiesVillagesDungeons()
+    {
+        var map = new Map(100, 100);
+        var bg = new BiomeGenerator(42);
+        var biomes = bg.GenerateHeightmap(100, 100);
+        var gen = new SettlementGenerator(42, map, biomes);
+        var regions = gen.Generate();
+
+        Assert.Contains(regions, r => r.Type == RegionType.City);
+        Assert.Contains(regions, r => r.Type == RegionType.Village);
+        Assert.Contains(regions, r => r.Type == RegionType.Dungeon);
+    }
+
+    [Fact]
+    public void SettlementGenerator_Deterministic()
+    {
+        var map1 = new Map(100, 100);
+        var bg1 = new BiomeGenerator(42);
+        var biomes1 = bg1.GenerateHeightmap(100, 100);
+        var gen1 = new SettlementGenerator(42, map1, biomes1);
+
+        var map2 = new Map(100, 100);
+        var bg2 = new BiomeGenerator(42);
+        var biomes2 = bg2.GenerateHeightmap(100, 100);
+        var gen2 = new SettlementGenerator(42, map2, biomes2);
+
+        var r1 = gen1.Generate();
+        var r2 = gen2.Generate();
+
+        Assert.Equal(r1.Count, r2.Count);
+        for (var i = 0; i < r1.Count; i++)
+        {
+            Assert.Equal(r1[i].Name, r2[i].Name);
+            Assert.Equal(r1[i].Type, r2[i].Type);
+            Assert.Equal(r1[i].X, r2[i].X);
+            Assert.Equal(r1[i].Y, r2[i].Y);
+            Assert.Equal(r1[i].Width, r2[i].Width);
+            Assert.Equal(r1[i].Height, r2[i].Height);
+        }
+    }
+
+    [Fact]
+    public void SettlementGenerator_SmallMap_ReturnsEmpty()
+    {
+        var map = new Map(20, 20);
+        var bg = new BiomeGenerator(42);
+        var biomes = bg.GenerateHeightmap(20, 20);
+        var gen = new SettlementGenerator(42, map, biomes);
+        var regions = gen.Generate();
+
+        Assert.Empty(regions);
+    }
+
+    [Fact]
+    public void SettlementGenerator_CitiesHaveStoneWalls()
+    {
+        var map = new Map(100, 100);
+        var bg = new BiomeGenerator(42);
+        var biomes = bg.GenerateHeightmap(100, 100);
+        var gen = new SettlementGenerator(42, map, biomes);
+        var regions = gen.Generate();
+
+        var city = regions.FirstOrDefault(r => r.Type == RegionType.City);
+        Assert.NotNull(city);
+
+        var hasWalls = false;
+        for (var x = city.X; x < city.X + city.Width; x++)
+        for (var y = city.Y; y < city.Y + city.Height; y++)
+            if (map.GetTile(x, y).TileDefId == "stone_wall")
+                hasWalls = true;
+
+        Assert.True(hasWalls, "City should contain stone_wall tiles");
+    }
+
+    [Fact]
+    public void SettlementGenerator_DungeonsHaveStairsDown()
+    {
+        var map = new Map(100, 100);
+        var bg = new BiomeGenerator(42);
+        var biomes = bg.GenerateHeightmap(100, 100);
+        var gen = new SettlementGenerator(42, map, biomes);
+        var regions = gen.Generate();
+
+        var dungeon = regions.FirstOrDefault(r => r.Type == RegionType.Dungeon);
+        Assert.NotNull(dungeon);
+
+        var hasStairs = false;
+        for (var x = dungeon.X; x < dungeon.X + dungeon.Width; x++)
+        for (var y = dungeon.Y; y < dungeon.Y + dungeon.Height; y++)
+            if (map.GetTile(x, y).TileDefId == "stairs_down")
+                hasStairs = true;
+
+        Assert.True(hasStairs, "Dungeon should contain stairs_down tile");
+    }
+
+    [Fact]
+    public void SettlementGenerator_RoadsExistBetweenSettlements()
+    {
+        var map = new Map(100, 100);
+        var bg = new BiomeGenerator(42);
+        var biomes = bg.GenerateHeightmap(100, 100);
+        var gen = new SettlementGenerator(42, map, biomes);
+        gen.Generate();
+
+        var hasRoads = false;
+        for (var x = 0; x < 100; x++)
+        for (var y = 0; y < 100; y++)
+            if (map.GetTile(x, y).TileDefId == "road")
+                hasRoads = true;
+
+        Assert.True(hasRoads, "Roads should exist between settlements");
+    }
+
+    [Fact]
+    public void SettlementGenerator_WorldGeneratorIntegration()
+    {
+        var gen = new WorldGenerator(42);
+        var world = gen.Generate(100, 100);
+
+        Assert.NotEmpty(world.Regions);
+        Assert.Contains(world.Regions, r => r.Type == RegionType.City);
+        Assert.Contains(world.Regions, r => r.Type == RegionType.Village);
+        Assert.Contains(world.Regions, r => r.Type == RegionType.Dungeon);
+    }
+
+    [Fact]
+    public void WorldGenerator_FindPlayerSpawn_NotInsideBuilding()
+    {
+        var generator = new WorldGenerator(42);
+        var world = generator.Generate(100, 100);
+        var spawn = generator.FindPlayerSpawn(world);
+
+        var tile = world.Map.GetTile(spawn.X, spawn.Y);
+        Assert.Equal("grass", tile.TileDefId);
+    }
 }

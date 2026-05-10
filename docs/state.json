@@ -1,9 +1,9 @@
 {
   "project": "MyRoguelike",
-  "version": "0.7.0",
-  "lastUpdated": "2026-05-10T20:00:00Z",
-  "phase": 7,
-  "phaseName": "World Generator (Terrain)",
+  "version": "0.8.0",
+  "lastUpdated": "2026-05-10T21:00:00Z",
+  "phase": 8,
+  "phaseName": "Settlement Generation",
   "phaseComplete": true,
   "completedTasks": [
     "Phase 1-2: Project scaffold, data system, tests",
@@ -18,11 +18,18 @@
     "Phase 7.5: NameGenerator — syllable-based fantasy names for cities, dungeons, general",
     "Phase 7.6: 100x100 overworld map generated with varied biomes",
     "Phase 7.7: OverworldScene uses generated world, random player spawn on grass, random enemy spawns",
-    "Phase 7.8: Verification — 20 tests pass (world, region, name gen, biome gen, world gen)"
+    "Phase 7.8: Verification — 20 tests pass (world, region, name gen, biome gen, world gen)",
+    "Phase 8.1: SettlementGenerator — places cities (3) with 4-8 buildings, walls, floors, doors",
+    "Phase 8.2: SettlementGenerator — places villages (4) with 2-4 smaller buildings",
+    "Phase 8.3: SettlementGenerator — places dungeons (3) with stone structure and stairs_down",
+    "Phase 8.4: SettlementGenerator — L-shaped roads connect nearby settlements",
+    "Phase 8.5: SettlementGenerator — skips small maps (< 30x30), biome-aware placement",
+    "Phase 8.6: WorldGenerator uses SettlementGenerator instead of placeholder regions",
+    "Phase 8.7: Player spawns on grass (not inside buildings) verified",
+    "Phase 8.8: Verification — 194 tests pass (10 new settlement tests)"
   ],
   "currentTasks": [],
   "nextTasks": [
-    "Phase 8: Settlement Generation — cities, villages, dungeons",
     "Phase 9: Dungeon Generator — BSP rooms, FOV, traps",
     "Phase 10: Items & Inventory — pickup, equip, use, drop"
   ],
@@ -99,6 +106,36 @@
       "category": "worldgen",
       "decision": "World generates on OverworldScene.LoadContent with random seed",
       "rationale": "Each game starts with a unique world. Seed-based for reproducibility."
+    },
+    {
+      "date": "2026-05-10",
+      "category": "worldgen",
+      "decision": "SettlementGenerator uses its own Random(seed + 10000) independent from WorldGenerator's RNG",
+      "rationale": "Ensures settlement placement is deterministic but decoupled from tree/terrain generation RNG state."
+    },
+    {
+      "date": "2026-05-10",
+      "category": "worldgen",
+      "decision": "Buildings placed as stone_wall perimeter + stone_floor interior + single door on random side",
+      "rationale": "Simple but recognizable building layout. Door placement avoids corners for accessibility."
+    },
+    {
+      "date": "2026-05-10",
+      "category": "worldgen",
+      "decision": "Settlements placed only on walkable land biomes (plains, forest, desert, tundra, hills, sand)",
+      "rationale": "Prevents building in water, mountains, or swamps. Matches realistic settlement placement."
+    },
+    {
+      "date": "2026-05-10",
+      "category": "worldgen",
+      "decision": "L-shaped roads connect nearest-neighbor settlements + 25% random extra connections",
+      "rationale": "Creates a connected road network without excessive complexity."
+    },
+    {
+      "date": "2026-05-10",
+      "category": "worldgen",
+      "decision": "SettlementGenerator skips maps smaller than 30x30",
+      "rationale": "Prevents ArgumentOutOfRangeException from Random.Next when spawn area is too small."
     }
   ],
   "documentation": {
@@ -145,6 +182,7 @@
     "src/MyRoguelike/World/World.cs",
     "src/MyRoguelike/World/Region.cs",
     "src/MyRoguelike/World/BiomeGenerator.cs",
+    "src/MyRoguelike/World/SettlementGenerator.cs",
     "src/MyRoguelike/World/WorldGenerator.cs",
     "tests/MyRoguelike.Tests/DataManagerTests.cs",
     "tests/MyRoguelike.Tests/EntityComponentTests.cs",
@@ -157,7 +195,7 @@
     "fonts": ["Content/Fonts/Console.spritefont (Arial, 24pt)"],
     "audio": []
   },
-  "notes": "Phase 7 complete. Overworld is procedurally generated via Perlin noise with 4 height octaves and 3 moisture octaves, producing 10 biome types. Player spawns on a grassy tile. 10 enemies spawn at random walkable positions. 5 city regions and 3 dungeon regions are placed with generated names. 184 tests pass (20 new, 164 existing).",
+  "notes": "Phase 8 complete. SettlementGenerator replaces placeholder regions with actual buildings on the overworld map. 3 cities (4-8 stone buildings with walls, floors, doors), 4 villages (2-4 smaller buildings), and 3 dungeons (stone structure with stairs_down) are placed on walkable biomes via seeded RNG (seed+10000). Roads connect settlements via L-shaped paths. Player spawns on grass (not inside buildings). 194 tests pass (10 new settlement tests, 184 existing).",
   "lastAgent": null,
   "agentInstructions": "state.json is a comprehensive project state tracker. To continue work: read state.json, check current phase and completedTasks, pick the next unstarted phase. After completing work, update state.json with new completedTasks, any decisions made, and notes."
 }
