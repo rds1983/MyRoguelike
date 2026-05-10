@@ -1,0 +1,135 @@
+{
+  "project": "MyRoguelike",
+  "version": "0.5.0",
+  "lastUpdated": "2026-05-10T18:30:00Z",
+  "phase": 5,
+  "phaseName": "Player Movement & Controls",
+  "phaseComplete": true,
+  "completedTasks": [
+    "Phase 1-2: Project scaffold, data system, tests",
+    "Phase 3: Entity system & components (7 components, 3 entity types)",
+    "Phase 4: Rendering engine, tile map, spritefont with Arial",
+    "Phase 5.1: Added Position, Glyph, Color properties to Entity base class",
+    "Phase 5.2: Implemented keyboard input handling in OverworldScene (WASD + Arrow keys)",
+    "Phase 5.3: Player movement with walkable tile checks and map bounds collision",
+    "Phase 5.4: Camera follows player after each move (CenterOn)",
+    "Phase 5.5: TitleScene with 'Press Enter to Start'",
+    "Phase 5.6: GameOverScene with 'You Died' + return to title",
+    "Phase 5.7: Stair/exit tile interaction (Enter on stairs_down/stairs_up)",
+    "Phase 5.8: PlaceholderScene for scene transitions (descend/climb stairs)",
+    "Phase 5.9: Player entity rendered as '@' glyph on map",
+    "Phase 5.10: Game1.Instance singleton + SceneManager public accessor",
+    "Phase 5.11: Game boots to TitleScene instead of raw OverworldScene"
+  ],
+  "currentTasks": [],
+  "nextTasks": [
+    "Phase 6: Combat System — turn-based combat, AI, damage, death",
+    "Phase 7: World Generator — Perlin noise terrain, biomes",
+    "Phase 8: Settlement Generation — cities, villages, dungeons",
+    "Phase 9: Dungeon Generator — BSP rooms, FOV, traps",
+    "Phase 10: Items & Inventory — pickup, equip, use, drop"
+  ],
+  "knownBugs": [
+    "Camera tests fail under non-100% DPI scaling (CenterOn/Move/ScreenToWorld/WorldToScreen expected values assume 1280x720 but actual viewport differs)"
+  ],
+  "dataFiles": {
+    "classes.json": "COMPLETE (5 classes)",
+    "enemies.json": "COMPLETE (10 Tier 1 enemies)",
+    "items.json": "COMPLETE (10 items)",
+    "potions.json": "COMPLETE (5 potions)",
+    "scrolls.json": "COMPLETE (5 scrolls)",
+    "tiles.json": "COMPLETE (14 tile types)",
+    "loot_tables.json": "COMPLETE (5 loot tables)",
+    "special_attacks.json": "COMPLETE (6 special attacks)"
+  },
+  "decisions": [
+    {
+      "date": "2026-05-10",
+      "category": "architecture",
+      "decision": "Entity-Component composition: Entity has List<IComponent>, systems query components",
+      "rationale": "Lightweight, no ECS framework dependency, sufficient for scope."
+    },
+    {
+      "date": "2026-05-10",
+      "category": "rendering",
+      "decision": "System font rendering via content pipeline (.spritefont) using Arial size 24",
+      "rationale": "MonoGame's SpriteFont provides efficient glyph rendering. Arial size 24 fits 32px tiles."
+    },
+    {
+      "date": "2026-05-10",
+      "category": "rendering",
+      "decision": "Tiles rendered as colored rectangle background (15% alpha) + glyph character centered via DrawString",
+      "rationale": "Provides clear roguelike aesthetic with visible glyph shapes on colored tile backgrounds."
+    },
+    {
+      "date": "2026-05-10",
+      "category": "build",
+      "decision": "Pinned MonoGame NuGet packages to 3.8.2.1105 for content pipeline compatibility",
+      "rationale": "MonoGame 3.8.4.1 dotnet-mgcb tool has assembly resolution issue with FontDescription type."
+    },
+    {
+      "date": "2026-05-10",
+      "category": "architecture",
+      "decision": "Game1.Instance singleton for scene management access from scenes",
+      "rationale": "Enables scenes to push/pop transitions (e.g., stairs -> placeholder, game over -> title) without tight coupling."
+    },
+    {
+      "date": "2026-05-10",
+      "category": "gameplay",
+      "decision": "Movement uses keyboard state polling per frame with prev-state edge detection for Enter key",
+      "rationale": "Simple polling approach sufficient for turn-based movement. Enter requires edge detection to avoid multiple triggers."
+    },
+    {
+      "date": "2026-05-10",
+      "category": "gameplay",
+      "decision": "Stair interaction pushes PlaceholderScene onto the scene stack",
+      "rationale": "Lightweight mechanism for scene transitions. PlaceholderScene pops itself on Enter, returning to the overworld."
+    }
+  ],
+  "documentation": {
+    "design.md": "COMPLETE",
+    "roadmap.md": "COMPLETE",
+    "vision.md": "COMPLETE",
+    "User Guide.md": "UPDATED — Controls section added",
+    "Developer Guide.md": "UPDATED — Input & Movement section added"
+  },
+  "sourceFiles": [
+    "src/MyRoguelike/Core/Program.cs",
+    "src/MyRoguelike/Core/Game1.cs",
+    "src/MyRoguelike/Core/Constants.cs",
+    "src/MyRoguelike/Core/Rng.cs",
+    "src/MyRoguelike/Data/DataManager.cs",
+    "src/MyRoguelike/Data/Models/*.cs",
+    "src/MyRoguelike/Components/IComponent.cs",
+    "src/MyRoguelike/Components/StatsComponent.cs",
+    "src/MyRoguelike/Components/InventoryComponent.cs",
+    "src/MyRoguelike/Components/EquipmentComponent.cs",
+    "src/MyRoguelike/Components/CombatComponent.cs",
+    "src/MyRoguelike/Components/AiComponent.cs",
+    "src/MyRoguelike/Components/EffectComponent.cs",
+    "src/MyRoguelike/Entities/Entity.cs",
+    "src/MyRoguelike/Entities/Player.cs",
+    "src/MyRoguelike/Entities/Enemy.cs",
+    "src/MyRoguelike/Entities/Npc.cs",
+    "src/MyRoguelike/Scenes/Scene.cs",
+    "src/MyRoguelike/Scenes/SceneManager.cs",
+    "src/MyRoguelike/Scenes/TitleScene.cs",
+    "src/MyRoguelike/Scenes/OverworldScene.cs",
+    "src/MyRoguelike/Scenes/PlaceholderScene.cs",
+    "src/MyRoguelike/Scenes/GameOverScene.cs",
+    "src/MyRoguelike/World/Camera.cs",
+    "src/MyRoguelike/World/Map.cs",
+    "src/MyRoguelike/World/Tile.cs",
+    "tests/MyRoguelike.Tests/DataManagerTests.cs",
+    "tests/MyRoguelike.Tests/EntityComponentTests.cs",
+    "tests/MyRoguelike.Tests/WorldSceneTests.cs"
+  ],
+  "assets": {
+    "textures": [],
+    "fonts": ["Content/Fonts/Console.spritefont (Arial, 24pt)"],
+    "audio": []
+  },
+  "notes": "Phase 5 complete. Player can move with WASD/Arrow keys, camera follows, walls block movement, stairs trigger scene transitions. Title and GameOver screens implemented. Game starts at title screen. 132 tests pass (0 failures).",
+  "lastAgent": null,
+  "agentInstructions": "state.json is a comprehensive project state tracker. To continue work: read state.json, check current phase and completedTasks, pick the next unstarted phase. After completing work, update state.json with new completedTasks, any decisions made, and notes."
+}

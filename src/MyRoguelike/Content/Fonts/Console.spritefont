@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:Content="Microsoft.Xna.Framework.Content">
+  <Asset Type="Microsoft.Xna.Framework.Content.Pipeline.Graphics.FontDescription, MonoGame.Framework.Content.Pipeline">
+    <FontName>Arial</FontName>
+    <Size>24</Size>
+    <Spacing>0</Spacing>
+    <UseKerning>true</UseKerning>
+    <Style>Regular</Style>
+    <CharacterRegions>
+      <CharacterRegion>
+        <Start>&#32;</Start>
+        <End>&#126;</End>
+      </CharacterRegion>
+    </CharacterRegions>
+  </Asset>
+</XnaContent>

@@ -1,0 +1,48 @@
+[
+  {
+    "id": "goblin",
+    "entries": [
+      { "itemId": "gold", "weight": 50, "min": 1, "max": 5 },
+      { "itemId": "rusty_dagger", "weight": 15, "min": 1, "max": 1 },
+      { "itemId": "health_potion", "weight": 10, "min": 1, "max": 1 },
+      { "itemId": "wooden_club", "weight": 15, "min": 1, "max": 1 },
+      { "itemId": "goblin_ear", "weight": 10, "min": 1, "max": 2 }
+    ]
+  },
+  {
+    "id": "rat",
+    "entries": [
+      { "itemId": "gold", "weight": 30, "min": 0, "max": 2 },
+      { "itemId": "rat_tail", "weight": 40, "min": 1, "max": 1 },
+      { "itemId": "health_potion", "weight": 5, "min": 1, "max": 1 }
+    ]
+  },
+  {
+    "id": "skeleton",
+    "entries": [
+      { "itemId": "gold", "weight": 40, "min": 1, "max": 4 },
+      { "itemId": "rusty_dagger", "weight": 15, "min": 1, "max": 1 },
+      { "itemId": "bone_mace", "weight": 5, "min": 1, "max": 1 },
+      { "itemId": "health_potion", "weight": 10, "min": 1, "max": 1 },
+      { "itemId": "old_bone", "weight": 20, "min": 1, "max": 3 }
+    ]
+  },
+  {
+    "id": "spider",
+    "entries": [
+      { "itemId": "gold", "weight": 30, "min": 1, "max": 3 },
+      { "itemId": "spider_silk", "weight": 35, "min": 1, "max": 2 },
+      { "itemId": "health_potion", "weight": 10, "min": 1, "max": 1 },
+      { "itemId": "antidote", "weight": 10, "min": 1, "max": 1 }
+    ]
+  },
+  {
+    "id": "wolf",
+    "entries": [
+      { "itemId": "gold", "weight": 20, "min": 0, "max": 2 },
+      { "itemId": "wolf_pelt", "weight": 40, "min": 1, "max": 1 },
+      { "itemId": "wolf_fang", "weight": 25, "min": 1, "max": 2 },
+      { "itemId": "health_potion", "weight": 10, "min": 1, "max": 1 }
+    ]
+  }
+]

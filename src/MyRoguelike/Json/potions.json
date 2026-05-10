@@ -1,0 +1,49 @@
+[
+  {
+    "id": "health_potion",
+    "name": "Health Potion",
+    "effectType": "heal",
+    "effectValue": 30,
+    "value": 25,
+    "rarity": "common",
+    "description": "A crimson liquid that restores 30 HP when consumed."
+  },
+  {
+    "id": "mana_potion",
+    "name": "Mana Potion",
+    "effectType": "restore_mana",
+    "effectValue": 20,
+    "value": 25,
+    "rarity": "common",
+    "description": "A blue liquid that restores 20 MP when consumed."
+  },
+  {
+    "id": "antidote",
+    "name": "Antidote",
+    "effectType": "cure_poison",
+    "effectValue": 0,
+    "value": 15,
+    "rarity": "common",
+    "description": "A bitter herbal brew that cures poisoning."
+  },
+  {
+    "id": "strength_potion",
+    "name": "Strength Potion",
+    "effectType": "buff_stat",
+    "effectValue": 4,
+    "duration": 5,
+    "value": 40,
+    "rarity": "uncommon",
+    "description": "A roaring red draught that boosts STR by 4 for 5 turns."
+  },
+  {
+    "id": "speed_potion",
+    "name": "Speed Potion",
+    "effectType": "buff_stat",
+    "effectValue": 4,
+    "duration": 5,
+    "value": 40,
+    "rarity": "uncommon",
+    "description": "A tingling yellow liquid that boosts DEX by 4 for 5 turns."
+  }
+]

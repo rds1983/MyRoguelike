@@ -1,0 +1,61 @@
+## .NET
+bin/
+obj/
+*.user
+*.suo
+*.sln.docstates
+*.userosscache
+*.userprefs
+.vs/
+*.nupkg
+
+## MonoGame Content Pipeline
+**/Content/bin/
+**/Content/obj/
+*.xnb
+
+## Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+## NuGet
+packages/
+*.nupkg
+
+## Visual Studio
+*.sln.ide/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+.vs/
+
+## JetBrains Rider
+.idea/
+*.sln.iml
+
+## Windows
+Thumbs.db
+Desktop.ini
+
+## Test output
+TestResults/
+
+## Node (if any)
+node_modules/
+
+## Saves (runtime-generated)
+src/MyRoguelike/Saves/
+
+## dotnet tools
+.config/

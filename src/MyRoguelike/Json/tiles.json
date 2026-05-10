@@ -1,0 +1,114 @@
+[
+  {
+    "id": "grass",
+    "name": "Grass",
+    "isWalkable": true,
+    "isTransparent": true,
+    "glyph": ".",
+    "color": { "r": 80, "g": 180, "b": 60, "a": 255 }
+  },
+  {
+    "id": "dirt",
+    "name": "Dirt",
+    "isWalkable": true,
+    "isTransparent": true,
+    "glyph": ",",
+    "color": { "r": 139, "g": 119, "b": 75, "a": 255 }
+  },
+  {
+    "id": "stone_floor",
+    "name": "Stone Floor",
+    "isWalkable": true,
+    "isTransparent": true,
+    "glyph": ".",
+    "color": { "r": 128, "g": 128, "b": 128, "a": 255 }
+  },
+  {
+    "id": "stone_wall",
+    "name": "Stone Wall",
+    "isWalkable": false,
+    "isTransparent": false,
+    "glyph": "#",
+    "color": { "r": 80, "g": 80, "b": 80, "a": 255 }
+  },
+  {
+    "id": "water",
+    "name": "Water",
+    "isWalkable": false,
+    "isTransparent": true,
+    "glyph": "~",
+    "color": { "r": 40, "g": 80, "b": 200, "a": 255 }
+  },
+  {
+    "id": "tree",
+    "name": "Tree",
+    "isWalkable": false,
+    "isTransparent": false,
+    "glyph": "T",
+    "color": { "r": 30, "g": 130, "b": 50, "a": 255 }
+  },
+  {
+    "id": "road",
+    "name": "Road",
+    "isWalkable": true,
+    "isTransparent": true,
+    "glyph": "=",
+    "color": { "r": 160, "g": 140, "b": 100, "a": 255 }
+  },
+  {
+    "id": "door",
+    "name": "Door",
+    "isWalkable": true,
+    "isTransparent": false,
+    "glyph": "+",
+    "color": { "r": 180, "g": 130, "b": 70, "a": 255 }
+  },
+  {
+    "id": "stairs_down",
+    "name": "Stairs Down",
+    "isWalkable": true,
+    "isTransparent": true,
+    "glyph": ">",
+    "color": { "r": 255, "g": 255, "b": 255, "a": 255 }
+  },
+  {
+    "id": "stairs_up",
+    "name": "Stairs Up",
+    "isWalkable": true,
+    "isTransparent": true,
+    "glyph": "<",
+    "color": { "r": 255, "g": 255, "b": 255, "a": 255 }
+  },
+  {
+    "id": "sand",
+    "name": "Sand",
+    "isWalkable": true,
+    "isTransparent": true,
+    "glyph": ".",
+    "color": { "r": 210, "g": 190, "b": 140, "a": 255 }
+  },
+  {
+    "id": "snow",
+    "name": "Snow",
+    "isWalkable": true,
+    "isTransparent": true,
+    "glyph": ".",
+    "color": { "r": 230, "g": 240, "b": 250, "a": 255 }
+  },
+  {
+    "id": "lava",
+    "name": "Lava",
+    "isWalkable": false,
+    "isTransparent": true,
+    "glyph": "~",
+    "color": { "r": 255, "g": 80, "b": 0, "a": 255 }
+  },
+  {
+    "id": "bridge",
+    "name": "Bridge",
+    "isWalkable": true,
+    "isTransparent": true,
+    "glyph": "=",
+    "color": { "r": 139, "g": 90, "b": 43, "a": 255 }
+  }
+]

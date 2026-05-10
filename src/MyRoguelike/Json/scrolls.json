@@ -1,0 +1,54 @@
+[
+  {
+    "id": "scroll_fireball",
+    "name": "Scroll of Fireball",
+    "effectType": "aoe_damage",
+    "effectValue": 25,
+    "element": "fire",
+    "range": 4,
+    "value": 60,
+    "rarity": "uncommon",
+    "description": "A crackling scroll that unleashes a fireball dealing 25 damage to all in the area."
+  },
+  {
+    "id": "scroll_teleportation",
+    "name": "Scroll of Teleportation",
+    "effectType": "teleport",
+    "effectValue": 0,
+    "range": 0,
+    "value": 50,
+    "rarity": "uncommon",
+    "description": "Teleports the reader to a safe location. Ideal for escaping danger."
+  },
+  {
+    "id": "scroll_identify",
+    "name": "Scroll of Identify",
+    "effectType": "identify",
+    "effectValue": 0,
+    "range": 0,
+    "value": 30,
+    "rarity": "common",
+    "description": "Reveals the true properties of a mysterious item."
+  },
+  {
+    "id": "scroll_enchantment",
+    "name": "Scroll of Enchantment",
+    "effectType": "enchant",
+    "effectValue": 3,
+    "duration": 10,
+    "range": 0,
+    "value": 70,
+    "rarity": "rare",
+    "description": "Temporarily enchants a weapon with +3 attack for 10 turns."
+  },
+  {
+    "id": "scroll_summoning",
+    "name": "Scroll of Summoning",
+    "effectType": "summon",
+    "effectValue": 1,
+    "range": 2,
+    "value": 80,
+    "rarity": "rare",
+    "description": "Summons a temporary ally to fight alongside the reader."
+  }
+]

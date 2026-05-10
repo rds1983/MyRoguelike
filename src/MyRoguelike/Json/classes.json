@@ -1,0 +1,67 @@
+[
+  {
+    "id": "warrior",
+    "name": "Warrior",
+    "description": "A master of melee combat, clad in heavy armor and wielding powerful weapons.",
+    "baseStats": { "strength": 14, "dexterity": 10, "constitution": 14, "intelligence": 8, "wisdom": 10 },
+    "statGrowth": { "strength": 3, "dexterity": 1, "constitution": 3, "intelligence": 1, "wisdom": 1 },
+    "hpPerLevel": 12,
+    "mpPerLevel": 2,
+    "skills": ["power_strike", "shield_bash", "taunt", "whirlwind", "war_cry"],
+    "allowedArmor": ["cloth", "leather", "chain", "plate"],
+    "allowedWeapons": ["sword", "axe", "mace"],
+    "startingEquipment": { "weapon": "iron_sword", "armor": "leather_armor", "shield": "wooden_shield" }
+  },
+  {
+    "id": "mage",
+    "name": "Mage",
+    "description": "A wielder of destructive magic, capable of devastating area-of-effect spells.",
+    "baseStats": { "strength": 8, "dexterity": 10, "constitution": 10, "intelligence": 16, "wisdom": 12 },
+    "statGrowth": { "strength": 1, "dexterity": 1, "constitution": 1, "intelligence": 4, "wisdom": 2 },
+    "hpPerLevel": 6,
+    "mpPerLevel": 10,
+    "skills": ["fireball", "ice_lance", "arcane_bolt", "meteor_storm", "mana_shield"],
+    "allowedArmor": ["cloth"],
+    "allowedWeapons": ["staff", "wand"],
+    "startingEquipment": { "weapon": "apprentice_staff", "armor": "cloth_robe" }
+  },
+  {
+    "id": "wizard",
+    "name": "Wizard",
+    "description": "A cunning spellcaster who bends reality with utility and control magic.",
+    "baseStats": { "strength": 8, "dexterity": 12, "constitution": 10, "intelligence": 16, "wisdom": 10 },
+    "statGrowth": { "strength": 1, "dexterity": 2, "constitution": 1, "intelligence": 4, "wisdom": 1 },
+    "hpPerLevel": 6,
+    "mpPerLevel": 9,
+    "skills": ["magic_missile", "teleport", "charm", "invisibility", "time_stop"],
+    "allowedArmor": ["cloth"],
+    "allowedWeapons": ["staff", "wand", "dagger"],
+    "startingEquipment": { "weapon": "apprentice_staff", "armor": "cloth_robe" }
+  },
+  {
+    "id": "cleric",
+    "name": "Cleric",
+    "description": "A holy warrior who channels divine power to heal allies and smite undead.",
+    "baseStats": { "strength": 12, "dexterity": 8, "constitution": 12, "intelligence": 10, "wisdom": 16 },
+    "statGrowth": { "strength": 2, "dexterity": 1, "constitution": 2, "intelligence": 1, "wisdom": 3 },
+    "hpPerLevel": 9,
+    "mpPerLevel": 7,
+    "skills": ["heal", "bless", "smite", "holy_shield", "resurrection"],
+    "allowedArmor": ["cloth", "leather", "chain"],
+    "allowedWeapons": ["mace", "staff"],
+    "startingEquipment": { "weapon": "bone_mace", "armor": "leather_armor" }
+  },
+  {
+    "id": "monk",
+    "name": "Monk",
+    "description": "A disciplined martial artist who fights with lightning-fast strikes and kicks.",
+    "baseStats": { "strength": 12, "dexterity": 16, "constitution": 12, "intelligence": 8, "wisdom": 12 },
+    "statGrowth": { "strength": 2, "dexterity": 3, "constitution": 2, "intelligence": 1, "wisdom": 1 },
+    "hpPerLevel": 8,
+    "mpPerLevel": 5,
+    "skills": ["flurry_of_blows", "roundhouse_kick", "meditation", "evasion", "chi_blast"],
+    "allowedArmor": ["cloth"],
+    "allowedWeapons": ["unarmed"],
+    "startingEquipment": { "weapon": "unarmed", "armor": "cloth_robe" }
+  }
+]

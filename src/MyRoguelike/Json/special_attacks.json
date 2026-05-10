@@ -1,0 +1,68 @@
+[
+  {
+    "id": "dragon_breath",
+    "name": "Dragon Breath",
+    "type": "cone_aoe",
+    "element": "fire",
+    "damageMultiplier": 3.0,
+    "range": 5,
+    "cooldown": 4,
+    "description": "Breathes a cone of searing flame dealing 3x ATK damage to all in the area."
+  },
+  {
+    "id": "death_roll",
+    "name": "Death Roll",
+    "type": "single_target",
+    "element": "physical",
+    "damageMultiplier": 1.5,
+    "range": 1,
+    "cooldown": 3,
+    "statusEffect": "bleed",
+    "statusDuration": 3,
+    "description": "A vicious spinning attack that grapples the target and inflicts bleed for 3 turns."
+  },
+  {
+    "id": "petrifying_gaze",
+    "name": "Petrifying Gaze",
+    "type": "single_target",
+    "element": "earth",
+    "damageMultiplier": 0,
+    "range": 6,
+    "cooldown": 5,
+    "statusEffect": "stun",
+    "statusDuration": 3,
+    "description": "Stares into the target's soul, petrifying them in place for 3 turns."
+  },
+  {
+    "id": "soul_drain",
+    "name": "Soul Drain",
+    "type": "single_target",
+    "element": "dark",
+    "damageMultiplier": 2.0,
+    "range": 4,
+    "cooldown": 3,
+    "description": "Drains the life force from a target, dealing 2x MATK damage and healing the caster for half."
+  },
+  {
+    "id": "blood_drain",
+    "name": "Blood Drain",
+    "type": "single_target",
+    "element": "dark",
+    "damageMultiplier": 1.2,
+    "range": 1,
+    "cooldown": 2,
+    "description": "Bites the target, dealing damage and restoring HP equal to the damage dealt."
+  },
+  {
+    "id": "web_trap",
+    "name": "Web Trap",
+    "type": "single_target",
+    "element": "physical",
+    "damageMultiplier": 0,
+    "range": 3,
+    "cooldown": 4,
+    "statusEffect": "root",
+    "statusDuration": 2,
+    "description": "Shoots a sticky web that immobilizes the target for 2 turns."
+  }
+]

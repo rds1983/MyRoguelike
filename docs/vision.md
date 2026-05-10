@@ -1,0 +1,18 @@
+- Hack-n-Slash 2D Roguelike
+- C#
+- dotnet 8.0
+- MonoGame
+- All the game data is stored in json
+- 5 playable classes: Warrior, Mage, Wizard, Cleric, Monk
+- World is procedurally generated and has its own history and mythology like in Dwarf Fortress
+- World consists of cities, villages & dungeons
+- Overworld travel
+- At least 50 different enemies
+- Shops
+- At least 50 different items
+- Special NPC Attacks(such as dragon breaths or crocodile death rolls)
+- Potions
+- Scrolls
+- User Guide.md
+- Developer Guide.md
+- state.json (comprehensively describes the current state of the project. So any agent can take on.)

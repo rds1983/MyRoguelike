@@ -1,0 +1,112 @@
+[
+  {
+    "id": "rusty_dagger",
+    "name": "Rusty Dagger",
+    "category": "weapon",
+    "subcategory": "dagger",
+    "tier": 1,
+    "rarity": "common",
+    "stats": { "attack": 2, "speed": 1 },
+    "value": 8,
+    "description": "A worn and rusted dagger. Better than nothing."
+  },
+  {
+    "id": "iron_sword",
+    "name": "Iron Sword",
+    "category": "weapon",
+    "subcategory": "sword",
+    "tier": 1,
+    "rarity": "common",
+    "stats": { "attack": 5 },
+    "value": 50,
+    "description": "A standard-issue iron blade. Reliable and sturdy."
+  },
+  {
+    "id": "wooden_shield",
+    "name": "Wooden Shield",
+    "category": "shield",
+    "subcategory": "shield",
+    "tier": 1,
+    "rarity": "common",
+    "stats": { "defense": 3 },
+    "value": 25,
+    "description": "A simple shield carved from oak."
+  },
+  {
+    "id": "leather_armor",
+    "name": "Leather Armor",
+    "category": "armor",
+    "subcategory": "leather",
+    "tier": 1,
+    "rarity": "common",
+    "stats": { "defense": 4 },
+    "value": 40,
+    "description": "Tough boiled leather that provides decent protection."
+  },
+  {
+    "id": "apprentice_staff",
+    "name": "Apprentice Staff",
+    "category": "weapon",
+    "subcategory": "staff",
+    "tier": 1,
+    "rarity": "common",
+    "stats": { "attack": 3, "intelligence": 3 },
+    "value": 45,
+    "description": "A wooden staff imbued with a minor focus enchantment."
+  },
+  {
+    "id": "shortbow",
+    "name": "Shortbow",
+    "category": "weapon",
+    "subcategory": "bow",
+    "tier": 1,
+    "rarity": "common",
+    "stats": { "attack": 4, "speed": 2 },
+    "value": 35,
+    "description": "A small bow made from flexible yew wood."
+  },
+  {
+    "id": "cloth_robe",
+    "name": "Cloth Robe",
+    "category": "armor",
+    "subcategory": "cloth",
+    "tier": 1,
+    "rarity": "common",
+    "stats": { "defense": 1, "intelligence": 2 },
+    "value": 15,
+    "description": "A simple robe woven from cotton. Offers minimal protection but aids concentration."
+  },
+  {
+    "id": "bone_mace",
+    "name": "Bone Mace",
+    "category": "weapon",
+    "subcategory": "mace",
+    "tier": 1,
+    "rarity": "common",
+    "stats": { "attack": 6, "speed": -1 },
+    "value": 30,
+    "description": "A heavy mace crafted from a large femur bone."
+  },
+  {
+    "id": "wooden_club",
+    "name": "Wooden Club",
+    "category": "weapon",
+    "subcategory": "mace",
+    "tier": 1,
+    "rarity": "common",
+    "stats": { "attack": 4 },
+    "value": 5,
+    "description": "A thick branch used as a crude weapon."
+  },
+  {
+    "id": "simple_ring",
+    "name": "Simple Ring",
+    "category": "accessory",
+    "subcategory": "ring",
+    "tier": 1,
+    "rarity": "common",
+    "stats": { "constitution": 1 },
+    "value": 20,
+    "description": "A plain silver ring. Wearing it makes you feel slightly tougher."
+  }
+]
