@@ -15,7 +15,7 @@ namespace MyRoguelike.Scenes;
 
 public class OverworldScene : Scene
 {
-    private readonly Map _map;
+    private Map _map = null!;
     private readonly Camera _camera;
     private readonly TurnSystem _turnSystem = new();
     private readonly MessageLog _messageLog = new();
@@ -24,35 +24,38 @@ public class OverworldScene : Scene
     private readonly List<Enemy> _enemies = [];
     private Texture2D _messageBg = null!;
     private bool _gameOver;
+    private World.World _world = null!;
 
-    private const int TestMapWidth = 40;
-    private const int TestMapHeight = 30;
     private KeyboardState _prevKeyboard;
 
     public OverworldScene()
     {
-        _map = new Map(TestMapWidth, TestMapHeight);
         _camera = new Camera(Constants.ScreenWidth, Constants.ScreenHeight);
-        _camera.SetMapBounds(TestMapWidth, TestMapHeight);
     }
 
     public override void LoadContent()
     {
         _tileTexture = Game1.PlaceholderTile;
-        GenerateTestMap();
 
+        var generator = new WorldGenerator();
+        _world = generator.Generate(Constants.OverworldWidth, Constants.OverworldHeight);
+        _map = _world.Map;
+
+        _camera.SetMapBounds(_map.Width, _map.Height);
+
+        var spawn = generator.FindPlayerSpawn(_world);
         _player = new Player
         {
             Id = "player",
             Name = "Hero",
-            Position = new Point(TestMapWidth / 2, TestMapHeight / 2),
+            Position = spawn,
             Glyph = "@",
             Color = Color.White,
             ClassId = "warrior"
         };
 
         SetupPlayerComponents();
-        SpawnEnemies();
+        SpawnEnemies(10);
 
         _turnSystem.Clear();
         _turnSystem.AddEntity(_player, GetEntitySpeed(_player));
@@ -256,15 +259,30 @@ public class OverworldScene : Scene
         combat.Recalculate(stats, equip);
     }
 
-    private void SpawnEnemies()
+    private void SpawnEnemies(int count)
     {
         _enemies.Clear();
+        var rng = new Random(_world.Seed + 999);
 
-        AddEnemy("goblin_scout", 15, 10);
-        AddEnemy("giant_rat", 25, 10);
-        AddEnemy("skeleton", 8, 20);
-        AddEnemy("spider", 30, 20);
-        AddEnemy("slime", 18, 18);
+        var enemyDefIds = new[] { "goblin_scout", "giant_rat", "skeleton", "spider", "slime" };
+
+        for (var i = 0; i < count; i++)
+        {
+            for (var attempt = 0; attempt < 50; attempt++)
+            {
+                var x = rng.Next(5, _map.Width - 5);
+                var y = rng.Next(5, _map.Height - 5);
+
+                if (!_map.IsWalkable(x, y)) continue;
+                if (_enemies.Any(e => e.Position.X == x && e.Position.Y == y)) continue;
+                var dist = Math.Abs(x - _player.Position.X) + Math.Abs(y - _player.Position.Y);
+                if (dist < 10) continue;
+
+                var defId = enemyDefIds[rng.Next(enemyDefIds.Length)];
+                AddEnemy(defId, x, y);
+                break;
+            }
+        }
     }
 
     private void AddEnemy(string enemyDefId, int x, int y)
@@ -300,38 +318,6 @@ public class OverworldScene : Scene
     {
         var stats = entity.GetComponent<StatsComponent>();
         return stats?.TotalDexterity ?? 10;
-    }
-
-    private void GenerateTestMap()
-    {
-        _map.Fill("grass");
-
-        _map.FillRect(0, 0, TestMapWidth - 1, 0, "stone_wall");
-        _map.FillRect(0, TestMapHeight - 1, TestMapWidth - 1, TestMapHeight - 1, "stone_wall");
-        _map.FillRect(0, 0, 0, TestMapHeight - 1, "stone_wall");
-        _map.FillRect(TestMapWidth - 1, 0, TestMapWidth - 1, TestMapHeight - 1, "stone_wall");
-
-        for (var x = 10; x <= 16; x++)
-        for (var y = 8; y <= 14; y++)
-            _map.SetTile(x, y, "water");
-
-        for (var x = 25; x <= 32; x++)
-        for (var y = 18; y <= 24; y++)
-            if ((x + y) % 3 != 0)
-                _map.SetTile(x, y, "tree");
-
-        for (var x = 5; x <= 20; x++)
-            _map.SetTile(x, 20, "road");
-        for (var y = 5; y <= 20; y++)
-            _map.SetTile(20, y, "road");
-
-        _map.SetTile(6, 6, "dirt");
-        _map.SetTile(7, 6, "dirt");
-        _map.SetTile(6, 7, "dirt");
-
-        _map.SetTile(20, 5, "door");
-        _map.SetTile(35, 25, "stairs_down");
-        _map.SetTile(3, 3, "stairs_up");
     }
 
     private void TryInteract()

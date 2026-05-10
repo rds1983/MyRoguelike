@@ -2,7 +2,7 @@
 
 A **Hack-n-Slash 2D Roguelike** built with C#, .NET 8.0, and MonoGame.
 
-> **Current Version:** 0.6.0 — Phase 6 (Combat System)
+> **Current Version:** 0.7.0 — Phase 7 (World Generator)
 
 ## Tech Stack
 
@@ -45,14 +45,14 @@ MyRoguelike/
 │   ├── Core/           # Game1, Program, Constants, Rng
 │   ├── Components/     # Stats, Inventory, Equipment, Combat, AI, Effects
 │   ├── Entities/       # Entity, Player, Enemy, Npc
-│   ├── Systems/        # CombatSystem, TurnSystem, AiSystem, PathfindingSystem, EventSystem
+│   ├── Systems/        # CombatSystem, TurnSystem, AiSystem, PathfindingSystem, EventSystem, NameGenerator
 │   ├── Scenes/         # SceneManager + Title, Overworld, Placeholder, GameOver scenes
 │   ├── UI/             # MessageLog
-│   ├── World/          # Map, Tile, Camera
+│   ├── World/          # Map, Tile, Camera, World, Region, BiomeGenerator, WorldGenerator
 │   ├── Data/           # DataManager + JSON models + Converters
 │   ├── Json/           # Data files (classes, enemies, items, potions, scrolls, tiles, loot, special attacks)
 │   └── Content/        # MonoGame content pipeline (Fonts)
-├── tests/              # xunit tests (164 passing)
+├── tests/              # xunit tests (185 passing)
 └── docs/               # Design doc, roadmap, state tracker, user & developer guides
 ```
 
@@ -65,7 +65,8 @@ MyRoguelike/
 | 4 | Rendering engine & tile map | ✅ |
 | 5 | Player movement & controls | ✅ |
 | 6 | Combat system | ✅ |
-| 7+ | World gen, settlements, dungeons, items, shops, etc. | 🔜 |
+| 7 | World generator (terrain) | ✅ |
+| 8+ | Settlements, dungeons, items, shops, etc. | 🔜 |
 
 See [`docs/roadmap.md`](docs/roadmap.md) for the full 23-phase plan.
 
