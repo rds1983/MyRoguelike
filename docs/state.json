@@ -1,29 +1,27 @@
 {
   "project": "MyRoguelike",
-  "version": "0.5.0",
-  "lastUpdated": "2026-05-10T18:30:00Z",
-  "phase": 5,
-  "phaseName": "Player Movement & Controls",
+  "version": "0.6.0",
+  "lastUpdated": "2026-05-10T19:00:00Z",
+  "phase": 6,
+  "phaseName": "Combat System",
   "phaseComplete": true,
   "completedTasks": [
     "Phase 1-2: Project scaffold, data system, tests",
     "Phase 3: Entity system & components (7 components, 3 entity types)",
     "Phase 4: Rendering engine, tile map, spritefont with Arial",
-    "Phase 5.1: Added Position, Glyph, Color properties to Entity base class",
-    "Phase 5.2: Implemented keyboard input handling in OverworldScene (WASD + Arrow keys)",
-    "Phase 5.3: Player movement with walkable tile checks and map bounds collision",
-    "Phase 5.4: Camera follows player after each move (CenterOn)",
-    "Phase 5.5: TitleScene with 'Press Enter to Start'",
-    "Phase 5.6: GameOverScene with 'You Died' + return to title",
-    "Phase 5.7: Stair/exit tile interaction (Enter on stairs_down/stairs_up)",
-    "Phase 5.8: PlaceholderScene for scene transitions (descend/climb stairs)",
-    "Phase 5.9: Player entity rendered as '@' glyph on map",
-    "Phase 5.10: Game1.Instance singleton + SceneManager public accessor",
-    "Phase 5.11: Game boots to TitleScene instead of raw OverworldScene"
+    "Phase 5.1-5.11: Player Movement & Controls",
+    "Phase 6.1: CombatSystem — MeleeAttack with hit/crit/damage, CombatResult struct",
+    "Phase 6.2: TurnSystem — speed-sorted queue, NextTurn, RemoveEntity, wrap-around",
+    "Phase 6.3: AiSystem — adjacent=attack, in-range=move toward player, else idle",
+    "Phase 6.4: Player bump-to-attack (WASD/Arrows into enemy), Space/. to wait",
+    "Phase 6.5: Entity death — XP gain, gold loot, item drops, enemy removal",
+    "Phase 6.6: EventSystem — EntityKilled, EntityDamaged static events",
+    "Phase 6.7: MessageLog — scrolling color-coded combat log with background",
+    "Phase 6.8: PathfindingSystem — BFS grid pathfinding with block predicate",
+    "Phase 6.9: Test verification — 40 pass (5 combat, 9 turn, 4 AI, 7 pathfinding, 4 message log, 3 event system)"
   ],
   "currentTasks": [],
   "nextTasks": [
-    "Phase 6: Combat System — turn-based combat, AI, damage, death",
     "Phase 7: World Generator — Perlin noise terrain, biomes",
     "Phase 8: Settlement Generation — cities, villages, dungeons",
     "Phase 9: Dungeon Generator — BSP rooms, FOV, traps",
@@ -84,14 +82,32 @@
       "category": "gameplay",
       "decision": "Stair interaction pushes PlaceholderScene onto the scene stack",
       "rationale": "Lightweight mechanism for scene transitions. PlaceholderScene pops itself on Enter, returning to the overworld."
+    },
+    {
+      "date": "2026-05-10",
+      "category": "combat",
+      "decision": "Bump-to-attack: pressing direction into an enemy triggers melee attack",
+      "rationale": "Standard roguelike convention — intuitive and requires no extra key modifier."
+    },
+    {
+      "date": "2026-05-10",
+      "category": "combat",
+      "decision": "TurnSystem uses speed-sorted queue with NextTurn wrapping around as rounds",
+      "rationale": "DEX-based speed order with full-round cycles matches traditional roguelike turn structure."
+    },
+    {
+      "date": "2026-05-10",
+      "category": "combat",
+      "decision": "All enemy turns processed immediately in one Update frame after player acts",
+      "rationale": "Turn-based game doesn't need interleaved player/enemy actions; simpler to batch enemies."
     }
   ],
   "documentation": {
     "design.md": "COMPLETE",
     "roadmap.md": "COMPLETE",
     "vision.md": "COMPLETE",
-    "User Guide.md": "UPDATED — Controls section added",
-    "Developer Guide.md": "UPDATED — Input & Movement section added"
+    "User Guide.md": "NEEDS UPDATE — add combat controls",
+    "Developer Guide.md": "NEEDS UPDATE — add combat, AI, turn system docs"
   },
   "sourceFiles": [
     "src/MyRoguelike/Core/Program.cs",
@@ -111,6 +127,12 @@
     "src/MyRoguelike/Entities/Player.cs",
     "src/MyRoguelike/Entities/Enemy.cs",
     "src/MyRoguelike/Entities/Npc.cs",
+    "src/MyRoguelike/Systems/CombatSystem.cs",
+    "src/MyRoguelike/Systems/TurnSystem.cs",
+    "src/MyRoguelike/Systems/AiSystem.cs",
+    "src/MyRoguelike/Systems/EventSystem.cs",
+    "src/MyRoguelike/Systems/PathfindingSystem.cs",
+    "src/MyRoguelike/UI/MessageLog.cs",
     "src/MyRoguelike/Scenes/Scene.cs",
     "src/MyRoguelike/Scenes/SceneManager.cs",
     "src/MyRoguelike/Scenes/TitleScene.cs",
@@ -122,14 +144,15 @@
     "src/MyRoguelike/World/Tile.cs",
     "tests/MyRoguelike.Tests/DataManagerTests.cs",
     "tests/MyRoguelike.Tests/EntityComponentTests.cs",
-    "tests/MyRoguelike.Tests/WorldSceneTests.cs"
+    "tests/MyRoguelike.Tests/WorldSceneTests.cs",
+    "tests/MyRoguelike.Tests/CombatSystemTests.cs"
   ],
   "assets": {
     "textures": [],
     "fonts": ["Content/Fonts/Console.spritefont (Arial, 24pt)"],
     "audio": []
   },
-  "notes": "Phase 5 complete. Player can move with WASD/Arrow keys, camera follows, walls block movement, stairs trigger scene transitions. Title and GameOver screens implemented. Game starts at title screen. 132 tests pass (0 failures).",
+  "notes": "Phase 6 complete. Player can bump-attack enemies with WASD/Arrows. 5 enemy types spawn on the map (goblin, rat, skeleton, spider, slime). Enemies pathfind toward player when in detection range and melee attack when adjacent. Killed enemies grant XP, gold, and loot. Turn system cycles player -> enemies -> player. Message log displays combat messages in an overlay at screen bottom. 172 tests pass (40 new, 132 existing).",
   "lastAgent": null,
   "agentInstructions": "state.json is a comprehensive project state tracker. To continue work: read state.json, check current phase and completedTasks, pick the next unstarted phase. After completing work, update state.json with new completedTasks, any decisions made, and notes."
 }
