@@ -1,6 +1,6 @@
 # MyRoguelike — User Guide
 
-> Version 0.9.0 — Phase 9 (Dungeons, FOV, Traps)
+> Version 0.10.0 — Phase 10 (Items & Inventory)
 
 ---
 
@@ -29,6 +29,15 @@ dotnet run
 | A / Left Arrow | Move left |
 | D / Right Arrow | Move right |
 | Enter | Interact (stairs, doors) / Confirm |
+| G | Pick up items on current tile |
+| I | Open/close Inventory |
+
+**Inventory (while open):**
+- Up/Down: select item
+- E: equip/unequip
+- U: use (potions/scrolls)
+- D: drop
+- Esc / I: close
 
 ## Scenes
 
@@ -67,6 +76,14 @@ dotnet run
 - Bump into enemies to attack them (turn-based combat)
 - Gain XP, gold, and loot from defeated enemies
 
+### Items & Inventory
+- Some items can be found on the ground (starting near your spawn)
+- Press **G** to pick up items on your current tile
+- Press **I** to open the inventory overlay
+- Equip weapons/armor/shields/accessories with **E**
+- Use potions/scrolls with **U**
+- Drop items with **D**
+
 ## Gameplay
 
 *Under active development. The game currently supports:*
@@ -77,6 +94,8 @@ dotnet run
 - Player movement with collision detection and bump-to-attack combat
 - 10 enemy types on the overworld
 - Turn-based combat with XP, gold, and loot drops
+- Inventory overlay + pickup/equip/use/drop
+- Potions (healing/mana/buffs) and basic scroll effects
 - Camera that follows the player
 - Stair interaction with placeholder dungeon transitions
 - Stair interaction to enter a real dungeon scene

@@ -1,6 +1,6 @@
 # MyRoguelike — Developer Guide
 
-> Version 0.9.0 — Phase 9 (Dungeon Generator, FOV, Traps)
+> Version 0.10.0 — Phase 10 (Items & Inventory)
 
 ---
 
@@ -299,6 +299,42 @@ FOV is implemented in `src/MyRoguelike/Systems/FovCalculator.cs`:
 - Produces a `bool[,]` visibility mask for the current frame
 - `DungeonScene` tracks an `explored` mask so previously seen tiles render dimly when out of sight
 
+## Items & Inventory (Phase 10)
+
+Phase 10 adds a minimal but functional item loop: **pickup → inventory → equip/use/drop**.
+
+### Runtime Items
+
+- `Item` and `InventoryComponent` live in `src/MyRoguelike/Components/InventoryComponent.cs`
+- `ItemFactory` (`src/MyRoguelike/Entities/ItemFactory.cs`) creates runtime items from:
+  - `items.json` (`ItemDef`)
+  - `potions.json` (`PotionDef`) — synthesized into an `ItemDef` with `Category = "potion"`
+  - `scrolls.json` (`ScrollDef`) — synthesized into an `ItemDef` with `Category = "scroll"`
+
+### Ground Items
+
+Both `OverworldScene` and `DungeonScene` maintain a simple ground-item store:
+- `Dictionary<(int x, int y), List<Item>>` keyed by tile coordinate
+- **Pickup**: `G` picks up items on the current tile (until inventory is full)
+- **Drop**: `D` drops one unit (for stackables) or the whole item (non-stackable)
+
+### Inventory Overlay
+
+Inventory UI is an in-scene overlay (no separate scene):
+- Toggle: `I`
+- Navigate: Up/Down
+- `E` equip/unequip (weapon/armor/shield/accessory)
+- `U` use (potion/scroll)
+- `D` drop
+
+### Use Effects
+
+- Potions are applied via `EffectSystem.ApplyPotion()` (`src/MyRoguelike/Systems/EffectSystem.cs`)
+  - healing/mana restore are immediate
+  - stat buffs apply temporary bonus stats and expire via `EffectSystem.Tick()`
+- Scrolls are applied via `ItemUseSystem` (`src/MyRoguelike/Systems/ItemUseSystem.cs`)
+  - teleport/identify/fireball are implemented in a lightweight way for now
+
 ### Adding New Scenes
 
 1. Create a class extending `Scene` in `src/MyRoguelike/Scenes/`
@@ -336,8 +372,8 @@ dotnet build
 
 ## Current Status
 
-- **Phase:** 9 (Dungeon Generator, FOV, Traps) — Complete
-- **Next phase:** 10 (Items & Inventory)
+- **Phase:** 10 (Items & Inventory) — Complete
+- **Next phase:** 11 (Shops & Economy)
 - For full task breakdown, see [`docs/roadmap.md`](docs/roadmap.md)
 - For design details, see [`docs/design.md`](docs/design.md)
 

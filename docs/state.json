@@ -1,9 +1,9 @@
 {
   "project": "MyRoguelike",
-  "version": "0.9.0",
-  "lastUpdated": "2026-05-10T21:10:00Z",
-  "phase": 9,
-  "phaseName": "Dungeon Generator",
+  "version": "0.10.0",
+  "lastUpdated": "2026-05-10T21:13:00Z",
+  "phase": 10,
+  "phaseName": "Items & Inventory",
   "phaseComplete": true,
   "completedTasks": [
     "Phase 1-2: Project scaffold, data system, tests",
@@ -31,11 +31,16 @@
     "Phase 9.2: FovCalculator — symmetric shadowcasting using tile transparency",
     "Phase 9.3: DungeonScene — enter from overworld stairs_down, explored memory rendering",
     "Phase 9.4: Traps — spike_trap tile damages player on step and disarms",
-    "Phase 9.5: Verification — added dungeon + FOV unit tests"
+    "Phase 9.5: Verification — added dungeon + FOV unit tests",
+    "Phase 10.1: ItemFactory — create runtime items from items/potions/scrolls",
+    "Phase 10.2: Ground items — pickup (G) and drop (D) on tile coordinates",
+    "Phase 10.3: Inventory overlay — open/close (I), select, equip/use/drop actions",
+    "Phase 10.4: Item use — potions (heal/mana/buffs) + basic scroll effects (teleport/identify/fireball)",
+    "Phase 10.5: Verification — added item/effect system tests; stabilized EventSystem tests"
   ],
   "currentTasks": [],
   "nextTasks": [
-    "Phase 10: Items & Inventory — pickup, equip, use, drop"
+    "Phase 11: Shops & Economy — buy/sell, shopkeeper NPCs"
   ],
   "knownBugs": [
     "Camera tests fail under non-100% DPI scaling (CenterOn/Move/ScreenToWorld/WorldToScreen expected values assume 1280x720 but actual viewport differs)"
@@ -46,7 +51,7 @@
     "items.json": "COMPLETE (10 items)",
     "potions.json": "COMPLETE (5 potions)",
     "scrolls.json": "COMPLETE (5 scrolls)",
-    "tiles.json": "COMPLETE (14 tile types)",
+    "tiles.json": "COMPLETE (15 tile types)",
     "loot_tables.json": "COMPLETE (5 loot tables)",
     "special_attacks.json": "COMPLETE (6 special attacks)"
   },
@@ -146,8 +151,8 @@
     "design.md": "COMPLETE",
     "roadmap.md": "COMPLETE",
     "vision.md": "COMPLETE",
-    "User Guide.md": "UPDATED — dungeons, FOV, traps",
-    "Developer Guide.md": "UPDATED — dungeon gen, FOV, transitions"
+    "User Guide.md": "UPDATED — items & inventory",
+    "Developer Guide.md": "UPDATED — item systems, inventory overlay"
   },
   "sourceFiles": [
     "src/MyRoguelike/Core/Program.cs",
@@ -199,7 +204,7 @@
     "fonts": ["Content/Fonts/Console.spritefont (Arial, 24pt)"],
     "audio": []
   },
-  "notes": "Phase 9 complete. Added a BSP-based DungeonGenerator (rooms + corridors) with stairs_up/stairs_down and spike traps. Implemented FOV via symmetric shadowcasting with explored-memory rendering. Overworld stairs_down now enters a DungeonScene; stairs_up returns to the overworld and restores the player position. Added unit tests for dungeon generation and FOV. Updated user/developer guides.",
+  "notes": "Phase 10 complete. Implemented item pickup/equip/use/drop with a lightweight inventory overlay (I) and ground-item storage per scene. Added ItemFactory to create runtime items from items/potions/scrolls, EffectSystem for potion buffs with duration, and ItemUseSystem for basic scroll effects. Added unit tests for item/effect systems and stabilized EventSystem tests for parallel execution.",
   "lastAgent": null,
   "agentInstructions": "state.json is a comprehensive project state tracker. To continue work: read state.json, check current phase and completedTasks, pick the next unstarted phase. After completing work, update state.json with new completedTasks, any decisions made, and notes."
 }

@@ -131,7 +131,9 @@ public class DataManager
                 // "gold" is handled specially (currency) — skip validation
                 if (entry.ItemId == "gold") continue;
 
-                if (!Items.ContainsKey(entry.ItemId))
+                if (!Items.ContainsKey(entry.ItemId) &&
+                    !Potions.ContainsKey(entry.ItemId) &&
+                    !Scrolls.ContainsKey(entry.ItemId))
                 {
                     Debug.WriteLine($"[DataManager] WARNING: Loot table '{table.Id}' references unknown item '{entry.ItemId}'");
                 }

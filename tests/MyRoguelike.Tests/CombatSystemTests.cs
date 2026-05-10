@@ -503,6 +503,8 @@ public class EventSystemTests
     [Fact]
     public void EntityDamaged_InvokesEvent()
     {
+        EventSystem.Reset();
+
         Entity? damaged = null;
         Entity? attacker = null;
         var damageValue = 0;
@@ -521,11 +523,15 @@ public class EventSystemTests
         Assert.Same(entity, damaged);
         Assert.Same(source, attacker);
         Assert.Equal(15, damageValue);
+
+        EventSystem.Reset();
     }
 
     [Fact]
     public void EntityKilled_InvokesEvent()
     {
+        EventSystem.Reset();
+
         Entity? killed = null;
         Entity? killer = null;
 
@@ -541,6 +547,8 @@ public class EventSystemTests
 
         Assert.Same(entity, killed);
         Assert.Same(source, killer);
+
+        EventSystem.Reset();
     }
 
     [Fact]

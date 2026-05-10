@@ -23,6 +23,7 @@ public sealed class DungeonScene : Scene
     private Texture2D _tileTexture = null!;
     private Texture2D _messageBg = null!;
     private readonly MessageLog _messageLog = new();
+    private readonly Dictionary<(int x, int y), List<Item>> _groundItems = new();
 
     private bool[,] _visible = null!;
     private bool[,] _explored = null!;
@@ -31,6 +32,9 @@ public sealed class DungeonScene : Scene
     private Point _stairsDown;
 
     private KeyboardState _prevKeyboard;
+    private bool _inventoryOpen;
+    private int _inventoryIndex;
+    private Texture2D _panelBg = null!;
 
     public DungeonScene(Player player, Point returnPosition, int seed)
     {
@@ -62,9 +66,15 @@ public sealed class DungeonScene : Scene
         _messageBg = new Texture2D(Game1.Instance.GraphicsDevice, 1, 1);
         _messageBg.SetData([new Color(0, 0, 0, 180)]);
 
+        _panelBg = new Texture2D(Game1.Instance.GraphicsDevice, 1, 1);
+        _panelBg.SetData([new Color(0, 0, 0, 220)]);
+
         _messageLog.Add("You descend into the dungeon...", Color.Gold);
         _messageLog.Add("Explore carefully: traps may be hidden in the dark.", Color.Gray);
         _messageLog.Add("Press Enter on < to return, > to go deeper (placeholder).", Color.Gray);
+        _messageLog.Add("Press G to pick up items. Press I to open inventory.", Color.Gray);
+
+        SeedStarterItems();
     }
 
     public override void Update(GameTime gameTime)
@@ -76,6 +86,12 @@ public sealed class DungeonScene : Scene
 
     private void HandlePlayerTurn(KeyboardState kb)
     {
+        if (_inventoryOpen)
+        {
+            HandleInventoryInput(kb);
+            return;
+        }
+
         var acted = false;
         var dx = 0;
         var dy = 0;
@@ -101,6 +117,16 @@ public sealed class DungeonScene : Scene
             acted = true;
         }
 
+        if (!acted && kb.IsKeyDown(Keys.G) && _prevKeyboard.IsKeyUp(Keys.G))
+        {
+            acted = TryPickupHere();
+        }
+
+        if (!acted && kb.IsKeyDown(Keys.I) && _prevKeyboard.IsKeyUp(Keys.I))
+        {
+            _inventoryOpen = true;
+        }
+
         if (!acted && kb.IsKeyDown(Keys.Enter) && _prevKeyboard.IsKeyUp(Keys.Enter))
         {
             TryInteract();
@@ -111,6 +137,8 @@ public sealed class DungeonScene : Scene
         {
             _camera.CenterOn(_player.Position.X, _player.Position.Y);
             RecomputeFov();
+            EffectSystem.Tick(_player);
+            RecalculatePlayerCombat();
         }
     }
 
@@ -204,7 +232,221 @@ public sealed class DungeonScene : Scene
         spriteBatch.Draw(_messageBg, new Rectangle(0, Constants.ScreenHeight - 120,
             Constants.ScreenWidth, 120), Color.White);
         _messageLog.Draw(spriteBatch, font, 8, Constants.ScreenHeight - 115, 5, 22);
+
+        if (_inventoryOpen)
+            DrawInventoryOverlay(spriteBatch, font);
+
         spriteBatch.End();
+    }
+
+    private void SeedStarterItems()
+    {
+        // Drop a couple items near stairs_up so players can test pickup/use in dungeon too.
+        var positions = new[]
+        {
+            new Point(_stairsUp.X + 1, _stairsUp.Y),
+            new Point(_stairsUp.X, _stairsUp.Y + 1)
+        };
+        var ids = new[] { "health_potion", "scroll_fireball" };
+
+        for (var i = 0; i < positions.Length; i++)
+        {
+            var p = positions[i];
+            if (!_map.IsInBounds(p.X, p.Y) || !_map.IsWalkable(p.X, p.Y)) continue;
+            var item = ItemFactory.Create(ids[i]);
+            if (item != null) DropToGround(p, item);
+        }
+    }
+
+    private void DropToGround(Point pos, Item item)
+    {
+        var key = (pos.X, pos.Y);
+        if (!_groundItems.TryGetValue(key, out var list))
+        {
+            list = [];
+            _groundItems[key] = list;
+        }
+        list.Add(item);
+    }
+
+    private bool TryPickupHere()
+    {
+        var inv = _player.GetComponent<InventoryComponent>();
+        if (inv == null) return false;
+
+        var key = (_player.Position.X, _player.Position.Y);
+        if (!_groundItems.TryGetValue(key, out var list) || list.Count == 0)
+        {
+            _messageLog.Add("Nothing here to pick up.", Color.Gray);
+            return false;
+        }
+
+        var pickedAny = false;
+        while (list.Count > 0 && !inv.IsFull)
+        {
+            var item = list[0];
+            list.RemoveAt(0);
+            if (inv.AddItem(item))
+            {
+                _messageLog.Add($"Picked up {item.DisplayName}.", Color.LightGreen);
+                pickedAny = true;
+            }
+        }
+
+        if (list.Count == 0)
+            _groundItems.Remove(key);
+
+        if (!pickedAny)
+            _messageLog.Add("Your inventory is full.", Color.Gray);
+
+        return pickedAny;
+    }
+
+    private void HandleInventoryInput(KeyboardState kb)
+    {
+        var inv = _player.GetComponent<InventoryComponent>();
+        var equip = _player.GetComponent<EquipmentComponent>();
+        if (inv == null || equip == null)
+        {
+            _inventoryOpen = false;
+            return;
+        }
+
+        if (kb.IsKeyDown(Keys.Escape) && _prevKeyboard.IsKeyUp(Keys.Escape))
+        {
+            _inventoryOpen = false;
+            return;
+        }
+
+        if (kb.IsKeyDown(Keys.I) && _prevKeyboard.IsKeyUp(Keys.I))
+        {
+            _inventoryOpen = false;
+            return;
+        }
+
+        if (kb.IsKeyDown(Keys.Up) && _prevKeyboard.IsKeyUp(Keys.Up))
+            _inventoryIndex = Math.Max(0, _inventoryIndex - 1);
+        else if (kb.IsKeyDown(Keys.Down) && _prevKeyboard.IsKeyUp(Keys.Down))
+            _inventoryIndex = Math.Min(Math.Max(0, inv.Items.Count - 1), _inventoryIndex + 1);
+
+        if (inv.Items.Count == 0) return;
+        _inventoryIndex = Math.Clamp(_inventoryIndex, 0, inv.Items.Count - 1);
+        var item = inv.Items[_inventoryIndex];
+
+        if (kb.IsKeyDown(Keys.E) && _prevKeyboard.IsKeyUp(Keys.E))
+        {
+            if (equip.IsEquipped(item))
+            {
+                equip.Unequip(item);
+                _messageLog.Add($"Unequipped {item.DisplayName}.", Color.Gray);
+                RecalculatePlayerCombat();
+                _inventoryOpen = false;
+                ConsumeAction();
+            }
+            else if (item.Def?.Category is "weapon" or "armor" or "shield" or "accessory")
+            {
+                equip.Equip(item);
+                _messageLog.Add($"Equipped {item.DisplayName}.", Color.LightGreen);
+                RecalculatePlayerCombat();
+                _inventoryOpen = false;
+                ConsumeAction();
+            }
+            else
+            {
+                _messageLog.Add("That can't be equipped.", Color.Gray);
+            }
+        }
+
+        if (kb.IsKeyDown(Keys.U) && _prevKeyboard.IsKeyUp(Keys.U))
+        {
+            if (ItemUseSystem.TryUse(_player, item, _map, enemies: null, out var msg))
+            {
+                _messageLog.Add(msg, Color.LightGreen);
+                inv.RemoveItem(item.Id, 1);
+                RecalculatePlayerCombat();
+                RecomputeFov();
+                _inventoryOpen = false;
+                ConsumeAction();
+            }
+            else
+            {
+                _messageLog.Add(msg, Color.Gray);
+            }
+        }
+
+        if (kb.IsKeyDown(Keys.D) && _prevKeyboard.IsKeyUp(Keys.D))
+        {
+            if (equip.IsEquipped(item))
+                equip.Unequip(item);
+
+            var drop = ItemFactory.Create(item.Id, 1, item.IsIdentified);
+            if (drop != null)
+                DropToGround(_player.Position, drop);
+
+            inv.RemoveItem(item.Id, 1);
+            _messageLog.Add($"Dropped {item.DisplayName}.", Color.Gray);
+            RecalculatePlayerCombat();
+            _inventoryOpen = false;
+            ConsumeAction();
+
+            _inventoryIndex = Math.Clamp(_inventoryIndex, 0, Math.Max(0, inv.Items.Count - 1));
+        }
+    }
+
+    private void DrawInventoryOverlay(SpriteBatch spriteBatch, SpriteFont font)
+    {
+        var inv = _player.GetComponent<InventoryComponent>();
+        var equip = _player.GetComponent<EquipmentComponent>();
+        if (inv == null || equip == null) return;
+
+        var panelW = 520;
+        var panelH = 420;
+        var x = Constants.ScreenWidth - panelW - 20;
+        var y = 20;
+        spriteBatch.Draw(_panelBg, new Rectangle(x, y, panelW, panelH), Color.White);
+
+        spriteBatch.DrawString(font, "Inventory", new Vector2(x + 14, y + 10), Color.Gold);
+        spriteBatch.DrawString(font, "Up/Down: select  E: equip  U: use  D: drop  Esc/I: close",
+            new Vector2(x + 14, y + 40), Color.Gray);
+
+        var startY = y + 80;
+        var maxLines = 14;
+        var start = Math.Max(0, _inventoryIndex - maxLines / 2);
+        var end = Math.Min(inv.Items.Count, start + maxLines);
+
+        for (var i = start; i < end; i++)
+        {
+            var item = inv.Items[i];
+            var selected = i == _inventoryIndex;
+
+            var prefix = equip.IsEquipped(item) ? "[E] " : "    ";
+            var qty = item.IsStackable ? $" x{item.Quantity}" : "";
+            var line = $"{prefix}{item.DisplayName}{qty}";
+            var color = selected ? Color.White : Color.LightGray;
+            if (selected)
+                spriteBatch.Draw(_panelBg, new Rectangle(x + 10, startY + (i - start) * 24 - 2, panelW - 20, 24), new Color(255, 255, 255, 30));
+            spriteBatch.DrawString(font, line, new Vector2(x + 14, startY + (i - start) * 24), color);
+        }
+
+        if (inv.Items.Count == 0)
+            spriteBatch.DrawString(font, "(empty)", new Vector2(x + 14, startY), Color.Gray);
+    }
+
+    private void RecalculatePlayerCombat()
+    {
+        var stats = _player.GetComponent<StatsComponent>();
+        var combat = _player.GetComponent<CombatComponent>();
+        var equip = _player.GetComponent<EquipmentComponent>();
+        if (stats == null || combat == null || equip == null) return;
+        combat.Recalculate(stats, equip);
+    }
+
+    private void ConsumeAction()
+    {
+        _camera.CenterOn(_player.Position.X, _player.Position.Y);
+        EffectSystem.Tick(_player);
+        RecalculatePlayerCombat();
+        RecomputeFov();
     }
 }
 
