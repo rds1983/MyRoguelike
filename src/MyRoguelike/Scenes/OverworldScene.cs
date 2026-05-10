@@ -93,10 +93,14 @@ public class OverworldScene : Scene
         var dx = 0;
         var dy = 0;
 
-        if (kb.IsKeyDown(Keys.W) || kb.IsKeyDown(Keys.Up)) dy = -1;
-        else if (kb.IsKeyDown(Keys.S) || kb.IsKeyDown(Keys.Down)) dy = 1;
-        else if (kb.IsKeyDown(Keys.A) || kb.IsKeyDown(Keys.Left)) dx = -1;
-        else if (kb.IsKeyDown(Keys.D) || kb.IsKeyDown(Keys.Right)) dx = 1;
+        if ((kb.IsKeyDown(Keys.W) || kb.IsKeyDown(Keys.Up)) &&
+            _prevKeyboard.IsKeyUp(Keys.W) && _prevKeyboard.IsKeyUp(Keys.Up)) dy = -1;
+        else if ((kb.IsKeyDown(Keys.S) || kb.IsKeyDown(Keys.Down)) &&
+                 _prevKeyboard.IsKeyUp(Keys.S) && _prevKeyboard.IsKeyUp(Keys.Down)) dy = 1;
+        else if ((kb.IsKeyDown(Keys.A) || kb.IsKeyDown(Keys.Left)) &&
+                 _prevKeyboard.IsKeyUp(Keys.A) && _prevKeyboard.IsKeyUp(Keys.Left)) dx = -1;
+        else if ((kb.IsKeyDown(Keys.D) || kb.IsKeyDown(Keys.Right)) &&
+                 _prevKeyboard.IsKeyUp(Keys.D) && _prevKeyboard.IsKeyUp(Keys.Right)) dx = 1;
 
         if (dx != 0 || dy != 0)
         {
